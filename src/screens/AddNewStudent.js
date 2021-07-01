@@ -269,7 +269,9 @@ class AddNewStudent extends Component {
             }
 
           </button>
+          
         </form>
+        <button onClick={() => window.print()} class="btn btn-primary hide-on-print" style={{ marginBottom: '50px' }}>Print</button>
         <div className="show-on-print" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
 
 
