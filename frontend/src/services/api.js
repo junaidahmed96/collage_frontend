@@ -127,6 +127,32 @@ const setNewPassword = async (email, pass) => {
 
 }
 
+
+
+const semesterbyclass = async (user) => {
+    console.log(user);
+    //console.log('runn')
+    let getData = [];
+    let myHeaders = new Headers();
+    // h.append('Authorization', token)
+    myHeaders.append("Authorization", user.token);
+
+
+   
+    let req = new Request(Path.getClassbysemester + '/' + user.semesterID, {  headers: myHeaders, method: 'get' })
+
+    await fetch(req)
+        .then(res => res.json())
+        .then((dat) => { getData = dat; })
+        .catch(err => { alert("error", err.message); getData = false })
+
+    console.log('edit->', getData)
+    if (getData?.success === 'false') {
+        alert(getData.message); getData = false
+    }
+
+    return getData
+}
 const StatusClass = async (user) => {
     console.log(user);
     //console.log('runn')
@@ -364,20 +390,22 @@ const addClass = async (token, c) => {
     var formdata = new FormData();
     formdata.append("className", c.className);
     formdata.append("noOfSemester", c.noOfSemester);
+    formdata.append("totalsemester", c.totalsemester);
     formdata.append("fee", c.fee);
     formdata.append("dated", c.dated);
     formdata.append("semester", c.semester);
+    formdata.append("semesterid", c.semesterId);
 
     let req = new Request(Path.addClass, { method: 'POST', headers: myHeaders, body: formdata, })
 
     await fetch(req,)
         .then(res => res.json())
         .then((dat) => getData = dat)
-        .catch(err => { alert(err.message); getData = false })
+    //    .catch(err => {  getData = false })
 
-    if (getData?.success === 'false') {
-        alert(getData.message); getData = false
-    }
+    // if (getData?.success === 'false') {
+    //    getData = false
+    // }
     console.log('addClass->', getData)
     return getData
 
@@ -539,7 +567,7 @@ export default {
 
     getStaffByCode, addUser, deleteUser,
 
-    getClass, addClass,
+    getClass, addClass,semesterbyclass,
 
     getStudentByCode, addStudent,
 

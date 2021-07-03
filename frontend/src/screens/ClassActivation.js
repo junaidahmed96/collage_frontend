@@ -14,7 +14,9 @@ class ClassActivation extends Component {
             // remainingfee: '',
             // rollno: '',
             allClasses: [],
+            allsemester: [],
             classID: '',
+            semesterID: '',
             // noofsemester: '',
             // curTime: new Date().toLocaleString(),
         };
@@ -77,9 +79,30 @@ class ClassActivation extends Component {
           
         
         }
+
+        setSemester=async(e)=>{
+            console.log(e.target.value);
+
+
+            let user={
+                semesterID:e.target.value,
+           
+                token:this.props.token,
+      
+            }
+              let res = await api.semesterbyclass(user)
+            console.log(res);
+              if (res.success=='true') {
+
+                  this.setState({ allsemester: res.result })
+                  
+              }
+
+
+        }
      
     render() {
-
+console.log(this.state.classID);
         return (
 
             <div className='admin-page add-new-student'>
@@ -92,12 +115,26 @@ class ClassActivation extends Component {
                     <div className="form-row  ">
                         <div class="form-group col-md-10 col-sm-6 col-lg-12">
                             <label for="class">Class</label>
-                            <select required onChange={(e) => this.setState({ classID: e.target.value })} value={this.state.classID} class="custom-select custom-select-sm" id="gender">
+                            <select required  value={this.state.semesterid} onChange={(e) => this.setSemester(e)} class="custom-select custom-select-sm" id="gender">
 
                                 <option>Please Select Class</option>
                                 {
                                     this.state.allClasses.map((c, index) =>
-                                        <option value={c.classID}  >{c.className}</option>
+                                        <option value={c.semesterid}  >{c.className}</option>
+                                    )
+                                }
+
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-10 col-sm-6 col-lg-12">
+                            <label for="class">Semester</label>
+                            <select required onChange={(e) => this.setState({ classID: e.target.value })} value={this.state.classID} class="custom-select custom-select-sm" id="gender">
+
+                                <option>Please Select Semester</option>
+                                {
+                                    this.state?.allsemester?.map((c, index) =>
+                                        <option value={c.classID}  >{c.noOfSemester}</option>
                                     )
                                 }
 

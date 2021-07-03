@@ -37,12 +37,14 @@ class AddNewStudent extends Component {
     inCode: this.props.user.inCode,
     email: '',
     rollNo: '',
+    semesters:'',
   }
 
   async componentDidMount() {
     let res = await api.getClass(this.props.token)
     if (res) {
-      this.setState({ allClasses: res.result, classID: res.result[0].classID })
+      console.log(res);
+      this.setState({ allClasses: res.result, classID: res.result[0].classID,semesters : res.result[0].noOfSemester, })
     }
 
   }
@@ -165,7 +167,7 @@ class AddNewStudent extends Component {
             <div class="form-group col-md-2">
               <label for="rollno">Class</label>
               <select required onChange={(event) => this.handleChange(event, "classID")} value={this.state.gender} class="custom-select custom-select-sm" id="gender">
-
+              <option>Please Select Class</option>
                 {
                   this.state.allClasses.map((c, index) =>
                     <option value={c.classID}  >{c.className}</option>
@@ -173,6 +175,7 @@ class AddNewStudent extends Component {
                 }
 
               </select>
+              
             </div>
           </div>
           <div className="form-row">
@@ -233,6 +236,10 @@ class AddNewStudent extends Component {
               <input onChange={(event) => this.handleChange(event, "motherName")} value={this.state.mothername} type="text" class="form-control form-control-sm" id="mothername" placeholder="Mother Name"></input>
             </div>
             <div class="form-group col-md-3">
+              <label for="mothername">Semester</label>
+              <input disabled  type="text" class="form-control form-control-sm" id="semester" placeholder={this.state?.semesters}></input>
+            </div>
+            <div class="form-group col-md-3">
               <label for="blood-group">Blood Group</label>
               <select required onChange={(event) => this.handleChange(event, "bloodGroup")} value={this.state.gender} class="custom-select custom-select-sm" id="gender">
 
@@ -246,6 +253,8 @@ class AddNewStudent extends Component {
                 <option value="AB-">AB-</option>
 
               </select>
+
+              
             </div>
           </div>
           <div class="form-row">

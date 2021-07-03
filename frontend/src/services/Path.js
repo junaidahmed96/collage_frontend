@@ -15,7 +15,8 @@ export const Path = {
 
     //app
     getStaffByCode: baseUrl + 'getUsersByInCode/',
-    getClass: baseUrl + 'class',
+    getClass: baseUrl + 'classdistinct',
+    getClassbysemester: baseUrl + 'class',
     getStudentByCode: baseUrl + 'getStudentyByStInCodeID/',
     getServiceByCode: baseUrl + 'getServicesBySerInCode/',
     
