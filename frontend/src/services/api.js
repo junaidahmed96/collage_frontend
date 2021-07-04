@@ -129,6 +129,26 @@ const setNewPassword = async (email, pass) => {
 
 
 
+
+const feebyrollNo = async (c) => {
+    console.log(c);
+    //console.log('runn')
+    let getData = [];
+    let myHeaders = new Headers();
+    // h.append('Authorization', token)
+    myHeaders.append("Authorization", c.token);
+
+
+   
+    let req = new Request(Path.studentfeebyrollno + '/' + c.rollno2, {  headers: myHeaders, method: 'get' })
+
+    await fetch(req)
+        .then(res => res.json())
+        .then((dat) => { getData = dat; })
+       
+
+    return getData
+}
 const semesterbyclass = async (user) => {
     console.log(user);
     //console.log('runn')
@@ -571,6 +591,6 @@ export default {
 
     getStudentByCode, addStudent,
 
-    addService, getServicesbyCode, deleteService,addfeebystudent,getfeebystudent
+    addService, getServicesbyCode, deleteService,addfeebystudent,getfeebystudent,feebyrollNo
 
 }

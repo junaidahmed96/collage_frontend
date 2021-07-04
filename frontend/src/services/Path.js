@@ -31,6 +31,7 @@ export const Path = {
 
     studentbyclass: baseUrl + 'studentbyclass',
     studentfee: baseUrl + 'studentfee',
+    studentfeebyrollno: baseUrl + 'studentfeebyrollno',
 
 
 }
