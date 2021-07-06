@@ -11,11 +11,17 @@ import api from "../services/api";
 import * as firebase from 'firebase'
 import { Loading } from "../components/Icons";
 import { ProgressBar } from 'react-bootstrap'
-import { setLoading } from "../store/actions/globalActions"; 
-import {cnicHandler} from '../components/Functions'
+import { setLoading } from "../store/actions/globalActions";
+import { cnicHandler } from '../components/Functions'
+import img1 from "../assets/plusnew.png"
+import img2 from "../assets/minusnew.png"
 
 class AddNewStudent extends Component {
   state = {
+    GetValue: {
+      attachment: "",
+    },
+    Services: [{ serviceName: '' }],
     allClasses: [],
     firstName: '',
     lastName: '',
@@ -51,7 +57,7 @@ class AddNewStudent extends Component {
     this.setState({ [name]: evt.target.value });
   }
 
- 
+
 
   uploadHandler = (e) => {
     e.preventDefault();
@@ -93,8 +99,11 @@ class AddNewStudent extends Component {
 
   }
 
-
-
+  nameHandler = (txt, index) => {
+    let temp = this.state.Services;
+    temp[index].serviceName = txt
+    this.setState({ Services: temp })
+  }
 
   finishAddStudent = async (url) => {
     let avatarObj = this.state.avatar;
@@ -120,6 +129,16 @@ class AddNewStudent extends Component {
   }
 
   render() {
+    const newinput = () => {
+      let temp = this.state.Services
+      temp.push({ serviceName: '' })
+      this.setState({ Services: temp })
+    }
+    const deleteinput = () => {
+      let temp = this.state.Services
+      temp.pop()
+      this.setState({ Services: temp })
+    }
 
     return (
       <div className='admin-page add-new-student'>
@@ -140,7 +159,6 @@ class AddNewStudent extends Component {
               <label for="last-name">Last Name *</label>
               <input required onChange={(event) => this.handleChange(event, "lastName")} value={this.state.lastName} type="text" class="form-control form-control-sm" id="last-name" placeholder="Last Name"></input>
             </div>
-
           </div>
           <ImageUpload getFile={file => this.imageHandler(file)} />
           <div className="form-row">
@@ -179,7 +197,7 @@ class AddNewStudent extends Component {
 
             <div class="form-group col-md-3">
               <label for="student-cnic">Student CNIC *</label>
-              <input required maxLength='15' onChange={(event) => this.setState({ studentCnic:  cnicHandler(this.state.studentCnic,event.target.value) })} value={this.state.studentCnic} type="text" class="form-control form-control-sm" id="student-cnic" placeholder="Student CNIC"></input>
+              <input required maxLength='15' onChange={(event) => this.setState({ studentCnic: cnicHandler(this.state.studentCnic, event.target.value) })} value={this.state.studentCnic} type="text" class="form-control form-control-sm" id="student-cnic" placeholder="Student CNIC"></input>
             </div>
             <div class="form-group col-md-3">
               <label for="phone">Phone No </label>
@@ -218,7 +236,7 @@ class AddNewStudent extends Component {
           <div class="form-row">
             <div class="form-group col-md-3">
               <label for="icnic-1">Father CNIC *</label>
-              <input required maxLength='15' onChange={(event) => this.setState({ fatherCnic: cnicHandler(this.state.fatherCnic,event.target.value) })} value={this.state.fatherCnic} type="text" class="form-control form-control-sm" id="cnic-1" placeholder="CNIC" ></input>
+              <input required maxLength='15' onChange={(event) => this.setState({ fatherCnic: cnicHandler(this.state.fatherCnic, event.target.value) })} value={this.state.fatherCnic} type="text" class="form-control form-control-sm" id="cnic-1" placeholder="CNIC" ></input>
             </div>
             <div class="form-group col-md-3">
               <label for="Guardian">Guardian</label>
@@ -244,7 +262,6 @@ class AddNewStudent extends Component {
                 <option value="O-">O-</option>
                 <option value="AB+">AB+</option>
                 <option value="AB-">AB-</option>
-
               </select>
             </div>
           </div>
@@ -259,7 +276,30 @@ class AddNewStudent extends Component {
               <label for="exampleFormControlTextarea1">Description</label>
               <textarea onChange={(event) => this.handleChange(event, "description")} value={this.state.description} class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             </div>
+
+
+            {
+              this.state.Services.map((item, index) =>
+                <>
+                  <div style={{ width: '100%', display: "flex", justifyContent: 'flex-start', alignItems: 'flex-end',marginBottom:'2rem' }}>
+                    <div class="form-group col-md-6" style={{ marginBottom: '0px' }}>
+                      <label for="last-name">Services</label>
+                      <select type="text" name="" id="" className='form-control form-control-sm' placeholder='Name' required onChange={val => this.nameHandler(val.target.value, index)} >
+                        <option value="1">Serivce #{index + 1}</option>
+                      </select>
+                    </div>
+                    <img src={img1} onClick={newinput} alt="" style={{ margin: 8, visibility: this.state.Services.length - 1 === index ? "visible" : "hidden", width: "30px", height: '30px', objectFit: 'contain' }} />
+                    {
+                      index !== 0 &&
+                      < img style={{margin: 8, width: "30px", height: '30px', objectFit: 'contain' }} src={img2} onClick={deleteinput} alt="" />
+                    }
+                  </div>
+                </>
+
+              )
+            }
           </div>
+
           <button type='submit' class="btn btn-primary" style={{ marginBottom: '50px', width: 200, height: 50 }}>
             {
               this.props.loading ?
@@ -269,12 +309,10 @@ class AddNewStudent extends Component {
             }
 
           </button>
-          
+
         </form>
         <button onClick={() => window.print()} class="btn btn-primary hide-on-print" style={{ marginBottom: '50px' }}>Print</button>
         <div className="show-on-print" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-
-
           <div className="cash-voucher" >
             <div className="upper-side">
               <div className="left-side">
