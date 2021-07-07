@@ -25,14 +25,15 @@ class AddService extends React.Component {
 
 
   addService = async (e) => {
+    console.log(e);
     e.preventDefault()
     let service = {
-      name: this.state.name.trim(),
-      discription: this.state.disp.trim(),
-      ammount: this.state.ammount.trim(),
-      inCode: this.state.inCod.trim(),
+      name: this.state.name,
+      discription: this.state.disp,
+      ammount: this.state.ammount,
+      inCode: this.state.inCode,
     }
-
+    console.log(service);
     this.props.setLoading(true)
     let res = await api.addService(this.props.token, service)
     if (res) {

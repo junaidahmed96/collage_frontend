@@ -43,13 +43,19 @@ class AddNewStudent extends Component {
     inCode: this.props.user.inCode,
     email: '',
     rollNo: '',
+    services: [], 
   }
 
   async componentDidMount() {
+
+    this.setState({ Services: this.props.services })
+
     let res = await api.getClass(this.props.token)
     if (res) {
       this.setState({ allClasses: res.result, classID: res.result[0].classID })
     }
+    console.log(this.state.Services,'2');
+    console.log(this.props.services,'TES');
 
   }
 
@@ -900,7 +906,8 @@ const mapState = state => {
   return {
     token: state.authReducers.token,
     loading: state.globalReducers.loading,
-    user: state.authReducers.user
+    user: state.authReducers.user,
+    services: state.appReducers.services,
   }
 }
 const mapDispatch = dispatch => {

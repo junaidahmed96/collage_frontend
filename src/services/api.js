@@ -550,7 +550,7 @@ const getServicesbyCode = async (token, code) => {
 
 }
 const addService = async (token, service) => {
-    //console.log('runn')
+    console.log('runn')
     let getData = [];
     var myHeaders = new Headers();
     myHeaders.append("Authorization", token);
@@ -562,7 +562,7 @@ const addService = async (token, service) => {
     formdata.append("serInCode", service.inCode);
 
 
-    let req = new Request(Path.addService, { method: 'POST', headers: myHeaders, body: formdata })
+    let req = new Request(Path.addservice, { method: 'POST', headers: myHeaders, body: formdata })
 
     await fetch(req,)
         .then(res => res.json())

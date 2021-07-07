@@ -24,7 +24,7 @@ export const Path = {
     addClass: baseUrl + 'class',
     statusclass: baseUrl + 'classstatus',
     addStudent: baseUrl + 'student',
-    addService: baseUrl + 'service',
+    addservice: baseUrl + 'service',
     
     deleteUser: baseUrl + 'user/',
     deleteService: baseUrl + 'service/',
