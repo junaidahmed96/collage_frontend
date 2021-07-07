@@ -25,6 +25,7 @@ import { connect } from "react-redux";
 
     handleChange(event) {
         this.setState({ Fee: event.target.value });
+
     }
 
     handleSubmit(event) {
