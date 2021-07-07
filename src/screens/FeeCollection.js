@@ -9,10 +9,11 @@ import { connect } from "react-redux";
     constructor(props) {
         super(props);
         this.state = {
-            Fee: 3000,
+            Fee: 0,
             paidfee: '',
             remainingfee: '',
             rollno: '',
+            totalamount:'',
             curTime: new Date().toLocaleString(),
         };
 
@@ -24,6 +25,7 @@ import { connect } from "react-redux";
 
     handleChange(event) {
         this.setState({ Fee: event.target.value });
+
     }
 
     handleSubmit(event) {
@@ -38,15 +40,17 @@ import { connect } from "react-redux";
         // window.location.href = "/ViewStudentData"
         console.log('tessssssssssssssssssss',e);
         e.preventDefault()
+        console.log(this.state,'myfun');
         let c = {
-            paidfee: this.state.paidfee,
-            remainingfee: this.state.Fee - this.state.paidfee,
-          totalfee: this.state.Fee,
+            paidfee: this.state.Fee,
+            remainingfee: (parseInt( this.state.remainingfee)!=0?parseInt(this.state.remainingfee):parseInt(this.state.totalamount)) - (parseInt( this.state.remainingfee) ==0? parseInt(this.state.Fee) + parseInt( this.state.paidfee):parseInt(this.state.Fee)),
+          totalfee: this.state.totalamount,
           dated: this.state.curTime,
           rollno:this.state.rollno
 
     
         }
+        console.log(c);
         let res = await api.addfeebystudent(this.props.token, c)
         if (res) {
             console.log(res);
@@ -57,6 +61,35 @@ import { connect } from "react-redux";
         }
     
       }
+
+
+      async rollnoHandler (e)  {
+        this.setState({rollno:e.target.value})
+        // window.location.href = "/ViewStudentData"
+        console.log('tessssssssssssssssssss',e.target.value);
+        console.log('t2',this.state.rollno);
+        e.preventDefault()
+
+        setTimeout(async() => {
+            
+            let c = {
+               
+              rollno2:e.target.value,
+                token:this.props.token,
+        
+            }
+            let res = await api.feebyrollNo(c)
+            console.log(res);
+            if (res.success=='true') {
+                this.setState({totalamount:res.result.fee,paidfee:res.result.paidfee,remainingfee:res.result.remainingfee})
+                
+            }
+
+        }, 1500);
+        
+    }
+    
+      
     
     render() {
         console.log('====================================');
@@ -79,7 +112,7 @@ import { connect } from "react-redux";
                         </div> */}
                         <div class="form-group col-md-3 onprint">
                             <label for="first-name">Roll No</label>
-                            <input type="number" class="form-control form-control-sm" id="first-name" onChange={(e)=>this.setState({rollno:e.target.value})} placeholder="Roll No"></input>
+                            <input type="number" class="form-control form-control-sm" id="first-name" onChange={(e)=>this.rollnoHandler(e)} placeholder="Roll No"></input>
                         </div>
                         {/* <div class="form-group col-md-3 onprint">
                             <label for="fathername">Father Name</label>
@@ -100,11 +133,15 @@ import { connect } from "react-redux";
                         </div>
                         <div class="form-group col-md-3 onprint">
                             <label for="paidfee">Paid Fee</label>
-                            <input type="text" class="form-control form-control-sm" id="paidfee" placeholder="Paid Fee" value={this.state.paidfee} onChange={(e)=>this.setState({paidfee:e.target.value})}></input>
+                            <input type="text" disabled class="form-control form-control-sm" id="paidfee" placeholder="Paid Fee" value={this.state.paidfee} onChange={(e)=>this.setState({paidfee:e.target.value})}></input>
                         </div>
                         <div class="form-group col-md-3 onprint">
                             <label for="fathername">Remaining Fee</label>
-                            <input type="text" class="form-control form-control-sm" id="fathername" placeholder="" value={this.state.Fee - this.state.paidfee} onChange={(e)=>this.setState({remainingfee:this.state.Fee - this.state.paidfee})} ></input>
+                            <input type="text" disabled class="form-control form-control-sm" id="fathername" placeholder="" value={this.state.totalamount - (this.state.paidfee==0?this.state.Fee:this.state.paidfee)} onChange={(e)=>this.setState({remainingfee:this.state.totalamount - this.state.Fee})} ></input>
+                        </div>
+                        <div class="form-group col-md-3 onprint">
+                            <label for="fathername">Total Amount</label>
+                            <input type="text" disabled class="form-control form-control-sm" id="fathername" placeholder="" value={this.state.totalamount}  ></input>
                         </div>
                         <div class="form-group col-md-3 onprint">
                             <label for="fathername">Dated</label>

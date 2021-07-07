@@ -15,12 +15,14 @@ export const Path = {
 
     //app
     getStaffByCode: baseUrl + 'getUsersByInCode/',
-    getClass: baseUrl + 'class',
+    getClass: baseUrl + 'classdistinct',
+    getClassbysemester: baseUrl + 'class',
     getStudentByCode: baseUrl + 'getStudentyByStInCodeID/',
     getServiceByCode: baseUrl + 'getServicesBySerInCode/',
     
     addUser: baseUrl + 'user',
     addClass: baseUrl + 'class',
+    statusclass: baseUrl + 'classstatus',
     addStudent: baseUrl + 'student',
     addService: baseUrl + 'service',
     
@@ -29,6 +31,7 @@ export const Path = {
 
     studentbyclass: baseUrl + 'studentbyclass',
     studentfee: baseUrl + 'studentfee',
+    studentfeebyrollno: baseUrl + 'studentfeebyrollno',
 
 
 }

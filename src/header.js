@@ -60,6 +60,9 @@ class Header extends Component {
         <NavLink exact to="/FeeReport" activeClassName='active-navlinks' className='links fee-report hvr-underline-from-left'>
           Fee Report
         </NavLink>
+        <NavLink exact to="/ClassActivation" activeClassName='active-navlinks' className='links fee-report hvr-underline-from-left'>
+          Class Activation and Deactivation
+        </NavLink>
         <NavLink exact to="/OverDue" activeClassName='active-navlinks' className='links overdue hvr-underline-from-left'>
           OverDue
         </NavLink>

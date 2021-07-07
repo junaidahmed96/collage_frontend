@@ -8,6 +8,7 @@ class ClassGeneration extends Component {
     class: "",
     semester: "",
     noofsemester: 0,
+    totalsemester: 0,
     fee: 0,
     dated: "",
   }
@@ -17,7 +18,7 @@ class ClassGeneration extends Component {
 
   samesterFeeFormater = () => {
 
-    let cal = this.state.fee / this.state.noofsemester
+    let cal = this.state.fee / this.state.totalsemester
     cal = cal === Infinity ? 0 : cal.toString() === 'NaN' ? 0 : cal
     setTimeout(() => {
       
@@ -33,19 +34,43 @@ class ClassGeneration extends Component {
 
 
   addClass = async (e) => {
+
     e.preventDefault()
-    let c = {
-      className: this.state.class,
-      fee: this.state.fee,
-      noOfSemester: this.state.noofsemester,
-      dated: this.state.dated,
-      semester:this.state.semester
-    }
+let semesterId= Math.floor(1000 + Math.random() * 9000);
+let respo;
+
+for (let i = 0; i < this.state.totalsemester; i++) {
+  let c = {
+    className: this.state.class,
+    fee: this.state.fee,
+    noOfSemester: i+1,
+    totalsemester: this.state.totalsemester,
+    dated: this.state.dated,
+    semester:this.state.semester,
+    semesterId:semesterId
+  }
+
+  console.log(c,'semester');
+
     let res = await api.addClass(this.props.token, c)
-    if (res) {
-      alert('Class Added')
+    
       
-    }
+      respo=res;
+    
+  
+}
+
+setTimeout(() => {
+  console.log(respo);
+  if(respo.success=='true'){
+    alert(respo.message)
+
+  }else{
+    alert(respo.message)
+  }
+}, 1000);
+
+  
   }
 
 
@@ -76,7 +101,7 @@ class ClassGeneration extends Component {
             </div>
             <div class="form-group col-md-3">
               <label for="last-name">No Of Semester</label>
-              <input onChange={(e) => this.setState({ noofsemester: e.target.value })} type="text" class="form-control form-control-sm" id="last-name" placeholder="Samester" required></input>
+              <input onChange={(e) => this.setState({ totalsemester: e.target.value })} type="text" class="form-control form-control-sm" id="last-name" placeholder="Samester" required></input>
             </div>
 
           </div>
