@@ -21,7 +21,7 @@ class AddNewStudent extends Component {
     GetValue: {
       attachment: "",
     },
-    Services: [{ serviceName: '' }],
+    Services: [{ serviceID: '' }],
     allClasses: [],
     firstName: '',
     lastName: '',
@@ -48,7 +48,7 @@ class AddNewStudent extends Component {
 
   async componentDidMount() {
 
-    this.setState({ Services: this.props.services })
+    // this.setState({ Services: this.props.services })
 
     let res = await api.getClass(this.props.token)
     if (res) {
@@ -105,9 +105,9 @@ class AddNewStudent extends Component {
 
   }
 
-  nameHandler = (txt, index) => {
+  nameHandler = (val, index) => {
     let temp = this.state.Services;
-    temp[index].serviceName = txt
+    temp[index].serviceID = val.target.value
     this.setState({ Services: temp })
   }
 
@@ -116,7 +116,7 @@ class AddNewStudent extends Component {
     await this.setState({ avatar: url, progress: 0 })
     let res = await api.addStudent(this.props.token, this.state)
     if (res) {
-      alert('Student added Sucessfullly')
+      alert(res.message)
       await this.props._getStudents(this.props.token, this.state.inCode)
     }
     else {
@@ -137,7 +137,7 @@ class AddNewStudent extends Component {
   render() {
     const newinput = () => {
       let temp = this.state.Services
-      temp.push({ serviceName: '' })
+      temp.push({ serviceID: '' })
       this.setState({ Services: temp })
     }
     const deleteinput = () => {
@@ -145,6 +145,8 @@ class AddNewStudent extends Component {
       temp.pop()
       this.setState({ Services: temp })
     }
+    console.log(this.state.Services)
+    console.log(this.state.services);
 
     return (
       <div className='admin-page add-new-student'>
@@ -290,8 +292,17 @@ class AddNewStudent extends Component {
                   <div style={{ width: '100%', display: "flex", justifyContent: 'flex-start', alignItems: 'flex-end',marginBottom:'2rem' }}>
                     <div class="form-group col-md-6" style={{ marginBottom: '0px' }}>
                       <label for="last-name">Services</label>
-                      <select type="text" name="" id="" className='form-control form-control-sm' placeholder='Name' required onChange={val => this.nameHandler(val.target.value, index)} >
-                        <option value="1">Serivce #{index + 1}</option>
+                      <select type="text" name="" id="" className='form-control form-control-sm' placeholder='Name' required onChange={val => this.nameHandler(val, index)} >
+                        <option >Please Select Service</option>
+                        {/* <option value={`Server123 ${index+1}`}>Serivce #{index + 1}</option>
+                        <option value={`Server564 ${index+1}`}>Serivce #{index + 1}</option>
+                        <option value={`Server456 ${index+1}`}>Serivce #{index + 1}</option>
+                        <option value={`Server4123 ${index+1}`}>Serivce #{index + 1}</option> */}
+                      {
+                        this.props.services.map((index,item => 
+                          <option value={`${item.serviceID}`}>{`${item.serviceName}`}</option>
+                          ))
+                      }
                       </select>
                     </div>
                     <img src={img1} onClick={newinput} alt="" style={{ margin: 8, visibility: this.state.Services.length - 1 === index ? "visible" : "hidden", width: "30px", height: '30px', objectFit: 'contain' }} />

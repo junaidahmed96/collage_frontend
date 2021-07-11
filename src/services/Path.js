@@ -1,5 +1,5 @@
-export const baseUrl = 'http://college-form-backend.herokuapp.com/'
-// export const baseUrl='http://localhost:5000/v1/'
+
+export const baseUrl='http://localhost:5000/v1/'
 
 export const Path = {
     

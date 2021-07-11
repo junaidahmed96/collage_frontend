@@ -488,8 +488,6 @@ const addStudent = async (token, student) => {
     var myHeaders = new Headers();
     myHeaders.append("Authorization", token);
 
-    console.log(student.contact, student.placeOfbirth)
-
     var formdata = new FormData();
     formdata.append("firstName", student.firstName)
     formdata.append("lastName", student.lastName)
@@ -512,6 +510,7 @@ const addStudent = async (token, student) => {
     formdata.append("classID", student.classID)
     formdata.append("avatar", student.avatar)
     formdata.append("rollNo", student.rollNo)
+    formdata.append("services", JSON.stringify(student.Services))
 
 
     let req = new Request(Path.addStudent, { method: 'POST', headers: myHeaders, body: formdata, })
