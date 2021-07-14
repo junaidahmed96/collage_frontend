@@ -190,7 +190,8 @@ class AddNewStudent extends Component {
             </div>
             <div class="form-group col-md-2">
               <label for="rollno">Class</label>
-              <select required onChange={(event) => this.handleChange(event, "classID")} value={this.state.gender} class="custom-select custom-select-sm" id="gender">
+              <select required onCick={(event) => this.handleChange(event, "classID")} value={this.state.gender} class="custom-select custom-select-sm" id="gender">
+              <option  >Please Select Class</option>
 
                 {
                   this.state.allClasses.map((c, index) =>
