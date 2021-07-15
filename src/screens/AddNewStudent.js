@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import api from "../services/api";
 import * as firebase from 'firebase'
 import { Loading } from "../components/Icons";
-import { ProgressBar } from 'react-bootstrap'
+import { ProgressBar, ThemeProvider } from 'react-bootstrap'
 import { setLoading } from "../store/actions/globalActions";
 import { cnicHandler } from '../components/Functions'
 import img1 from "../assets/plusnew.png"
@@ -44,6 +44,9 @@ class AddNewStudent extends Component {
     email: '',
     rollNo: '',
     services: [], 
+    fee:'',
+    className:"",
+    id:""
   }
 
   async componentDidMount() {
@@ -54,6 +57,14 @@ class AddNewStudent extends Component {
     if (res) {
       this.setState({ allClasses: res.result, classID: res.result[0].classID })
     }
+
+    let res3 = await api.getRollNO(this.props.token)
+    if (res3) {
+
+
+      this.setState({ rollNo: res3.result })
+    }
+    
     console.log(this.state.Services,'2');
     console.log(this.props.services,'TES');
 
@@ -133,6 +144,20 @@ class AddNewStudent extends Component {
     this.setState({ avatar })
 
   }
+  printData=async()=>{
+    
+
+    let print = await api.studentPrint(this.props.token, this.state.rollNo)
+if (print.success) {
+  console.log(print.data);
+
+  this.setState({rollNo:print.data[0].rollNo,firstName:print.data[0].firstname,fatherName:print.data[0].fathername,fee:print.data[0].fee,
+  className:print.data[0].className,description:print.data[0].description,contact:print.data[0].contact,id:print.data[0].stID,studentCnic:print.data[0].studentCnic})
+
+  console.log(this.state,'dttt');
+}
+window.print()
+  }
 
   render() {
     const newinput = () => {
@@ -186,11 +211,11 @@ class AddNewStudent extends Component {
             </div>
             <div class="form-group col-md-2">
               <label for="rollno">Roll No *</label>
-              <input required onChange={(event) => this.handleChange(event, "rollNo")} value={this.state.rollNo} type="number" class="form-control form-control-sm" id="rollno" placeholder="Roll No"></input>
+              <input required  onChange={(event) => this.handleChange(event, "rollNo")} value={this.state.rollNo} type="number" class="form-control form-control-sm" id="rollno" placeholder="Roll No"></input>
             </div>
             <div class="form-group col-md-2">
               <label for="rollno">Class</label>
-              <select required onCick={(event) => this.handleChange(event, "classID")} value={this.state.gender} class="custom-select custom-select-sm" id="gender">
+              <select required onCick={(event) => this.handleChange(event, "classID")} class="custom-select custom-select-sm" id="gender">
               <option  >Please Select Class</option>
 
                 {
@@ -329,7 +354,7 @@ class AddNewStudent extends Component {
           </button>
 
         </form>
-        <button onClick={() => window.print()} class="btn btn-primary hide-on-print" style={{ marginBottom: '50px' }}>Print</button>
+        <button onClick={() => this.printData()} class="btn btn-primary hide-on-print" style={{ marginBottom: '50px' }}>Print</button>
         <div className="show-on-print" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
           <div className="cash-voucher" >
             <div className="upper-side">
@@ -367,21 +392,21 @@ class AddNewStudent extends Component {
                   <h2 className="headings" >Valid Upto</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings" >2021-02-19</h2>
+                  <h2 className="headings" >{moment().add(30, 'days').format('YYYY/DD/MM')}</h2>
                 </div>
               </div>
               <div className="feemonth">
                 <div className="width">
-                  <h2 className="headings" >Family ID</h2>
+                  <h2 className="headings" >ROLL No</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings" >145/145/145</h2>
+                  <h2 className="headings" >{this.state.rollNo}</h2>
                 </div>
                 <div className="width">
                   <h2 className="headings" >Challan No</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings" >145</h2>
+                  <h2 className="headings" >{this.state.id}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -389,7 +414,7 @@ class AddNewStudent extends Component {
                   <h2 className="headings">Student Name</h2>
                 </div>
                 <div className="width-2">
-                  <h2 className="headings" style={{ minHeight: 15 }}>{`${this.state.firstname}  ${this.state.lastname} `}</h2>
+                  <h2 className="headings" style={{ minHeight: 15 }}>{`${this.state.firstname}  `}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -405,7 +430,7 @@ class AddNewStudent extends Component {
                   <h2 className="headings" >Class / Sec</h2>
                 </div>
                 <div className="width-2">
-                  <h2 className="headings" style={{ minHeight: 15 }}  >{this.state.class}</h2>
+                  <h2 className="headings" style={{ minHeight: 15 }}  >{this.state.className}</h2>
                 </div>
               </div>
             </div>
@@ -419,8 +444,8 @@ class AddNewStudent extends Component {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'flex-start' }}>
                   <span>1</span>
-                  <span>145</span>
-                  <span>T/F Jan 21 </span>
+                  <span>{this.state.id}</span>
+                  <span>{this.state.description} </span>
                   <span>{this.state.fee}</span>
                 </div>
               </div>
@@ -439,10 +464,10 @@ class AddNewStudent extends Component {
               </div>
               <div className="feemonth">
                 <div className="width-2">
-                  <h2 className="headings">Total Dues Till <span>2021-02-19</span></h2>
+                  <h2 className="headings">Total Dues Till <span>{moment().add(15, 'days').format('YYYY/DD/MM')}</span></h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">Rs. 9000</h2>
+                  <h2 className="headings">{this.state.fee}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -450,7 +475,7 @@ class AddNewStudent extends Component {
                   <h2 className="headings" >Amount After Above Due Date</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">{this.state.fee + 300}</h2>
+                  <h2 className="headings">{parseInt(this.state.fee) + 300}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -511,21 +536,21 @@ class AddNewStudent extends Component {
                   <h2 className="headings" >Valid Upto</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings" >2021-02-19</h2>
+                  <h2 className="headings" >{moment().add(30, 'days').format('YYYY/DD/MM')}</h2>
                 </div>
               </div>
               <div className="feemonth">
                 <div className="width">
-                  <h2 className="headings" >Family ID</h2>
+                  <h2 className="headings" >ROLL No</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings" >145/145/145</h2>
+                  <h2 className="headings" >{this.state.rollNo}</h2>
                 </div>
                 <div className="width">
                   <h2 className="headings" >Challan No</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings" >145</h2>
+                  <h2 className="headings" >{this.state.id}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -533,7 +558,7 @@ class AddNewStudent extends Component {
                   <h2 className="headings">Student Name</h2>
                 </div>
                 <div className="width-2">
-                  <h2 className="headings" style={{ minHeight: 15 }}>{`${this.state.firstname}  ${this.state.lastname} `}</h2>
+                  <h2 className="headings" style={{ minHeight: 15 }}>{`${this.state.firstname}  `}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -549,7 +574,7 @@ class AddNewStudent extends Component {
                   <h2 className="headings" >Class / Sec</h2>
                 </div>
                 <div className="width-2">
-                  <h2 className="headings" style={{ minHeight: 15 }}  >{this.state.class}</h2>
+                  <h2 className="headings" style={{ minHeight: 15 }}  >{this.state.className}</h2>
                 </div>
               </div>
             </div>
@@ -563,8 +588,8 @@ class AddNewStudent extends Component {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'flex-start' }}>
                   <span>1</span>
-                  <span>145</span>
-                  <span>T/F Jan 21 </span>
+                  <span>{this.state.id}</span>
+                  <span>{this.state.description} </span>
                   <span>{this.state.fee}</span>
                 </div>
               </div>
@@ -583,10 +608,10 @@ class AddNewStudent extends Component {
               </div>
               <div className="feemonth">
                 <div className="width-2">
-                  <h2 className="headings">Total Dues Till <span>2021-02-19</span></h2>
+                  <h2 className="headings">Total Dues Till <span>{moment().add(15, 'days').format('YYYY/DD/MM')}</span></h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">Rs. 9000</h2>
+                  <h2 className="headings">{this.state.fee}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -594,7 +619,7 @@ class AddNewStudent extends Component {
                   <h2 className="headings" >Amount After Above Due Date</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">{this.state.fee + 300}</h2>
+                  <h2 className="headings">{parseInt(this.state.fee) + 300}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -655,21 +680,21 @@ class AddNewStudent extends Component {
                   <h2 className="headings" >Valid Upto</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings" >2021-02-19</h2>
+                  <h2 className="headings" >{moment().add(30, 'days').format('YYYY/DD/MM')}</h2>
                 </div>
               </div>
               <div className="feemonth">
                 <div className="width">
-                  <h2 className="headings" >Family ID</h2>
+                  <h2 className="headings" >ROLL No</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings" >145/145/145</h2>
+                  <h2 className="headings" >{this.state.rollNo}</h2>
                 </div>
                 <div className="width">
                   <h2 className="headings" >Challan No</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings" >145</h2>
+                  <h2 className="headings" >{this.state.id}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -677,7 +702,7 @@ class AddNewStudent extends Component {
                   <h2 className="headings">Student Name</h2>
                 </div>
                 <div className="width-2">
-                  <h2 className="headings" style={{ minHeight: 15 }}>{`${this.state.firstname}  ${this.state.lastname} `}</h2>
+                  <h2 className="headings" style={{ minHeight: 15 }}>{`${this.state.firstname}  `}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -693,7 +718,7 @@ class AddNewStudent extends Component {
                   <h2 className="headings" >Class / Sec</h2>
                 </div>
                 <div className="width-2">
-                  <h2 className="headings" style={{ minHeight: 15 }}  >{this.state.class}</h2>
+                  <h2 className="headings" style={{ minHeight: 15 }}  >{this.state.className}</h2>
                 </div>
               </div>
             </div>
@@ -707,8 +732,8 @@ class AddNewStudent extends Component {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'flex-start' }}>
                   <span>1</span>
-                  <span>145</span>
-                  <span>T/F Jan 21 </span>
+                  <span>{this.state.id}</span>
+                  <span>{this.state.description} </span>
                   <span>{this.state.fee}</span>
                 </div>
               </div>
@@ -727,10 +752,10 @@ class AddNewStudent extends Component {
               </div>
               <div className="feemonth">
                 <div className="width-2">
-                  <h2 className="headings">Total Dues Till <span>2021-02-19</span></h2>
+                  <h2 className="headings">Total Dues Till <span>{moment().add(15, 'days').format('YYYY/DD/MM')}</span></h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">Rs. 9000</h2>
+                  <h2 className="headings">{this.state.fee}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -738,7 +763,7 @@ class AddNewStudent extends Component {
                   <h2 className="headings" >Amount After Above Due Date</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">{this.state.fee + 300}</h2>
+                  <h2 className="headings">{parseInt(this.state.fee )+ 300}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -799,21 +824,21 @@ class AddNewStudent extends Component {
                   <h2 className="headings" >Valid Upto</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings" >2021-02-19</h2>
+                  <h2 className="headings" >{moment().add(30, 'days').format('YYYY/DD/MM')}</h2>
                 </div>
               </div>
               <div className="feemonth">
                 <div className="width">
-                  <h2 className="headings" >Family ID</h2>
+                  <h2 className="headings" >ROLL No</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings" >145/145/145</h2>
+                  <h2 className="headings" >{this.state.rollNo}</h2>
                 </div>
                 <div className="width">
                   <h2 className="headings" >Challan No</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings" >145</h2>
+                  <h2 className="headings" >{this.state.id}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -821,7 +846,7 @@ class AddNewStudent extends Component {
                   <h2 className="headings">Student Name</h2>
                 </div>
                 <div className="width-2">
-                  <h2 className="headings" style={{ minHeight: 15 }}>{`${this.state.firstname}  ${this.state.lastname} `}</h2>
+                  <h2 className="headings" style={{ minHeight: 15 }}>{`${this.state.firstname}  `}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -837,7 +862,7 @@ class AddNewStudent extends Component {
                   <h2 className="headings" >Class / Sec</h2>
                 </div>
                 <div className="width-2">
-                  <h2 className="headings" style={{ minHeight: 15 }}  >{this.state.class}</h2>
+                  <h2 className="headings" style={{ minHeight: 15 }}  >{this.state.className}</h2>
                 </div>
               </div>
             </div>
@@ -851,8 +876,8 @@ class AddNewStudent extends Component {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'flex-start' }}>
                   <span>1</span>
-                  <span>145</span>
-                  <span>T/F Jan 21 </span>
+                  <span>{this.state.id}</span>
+                  <span>{this.state.description} </span>
                   <span>{this.state.fee}</span>
                 </div>
               </div>
@@ -871,10 +896,10 @@ class AddNewStudent extends Component {
               </div>
               <div className="feemonth">
                 <div className="width-2">
-                  <h2 className="headings">Total Dues Till <span>2021-02-19</span></h2>
+                  <h2 className="headings">Total Dues Till <span>{moment().add(15, 'days').format('YYYY/DD/MM')}</span></h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">Rs. 9000</h2>
+                  <h2 className="headings">{this.state.fee}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -882,7 +907,7 @@ class AddNewStudent extends Component {
                   <h2 className="headings" >Amount After Above Due Date</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">{this.state.fee + 300}</h2>
+                  <h2 className="headings">{parseInt(this.state.fee) + 300}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -907,6 +932,7 @@ class AddNewStudent extends Component {
             </div>
 
           </div>
+         
 
         </div>
       </div>

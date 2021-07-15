@@ -148,6 +148,36 @@ const feebyrollNo = async (c) => {
        
 
     return getData
+
+}
+
+
+
+
+
+const studentPrint = async (token,id) => {
+    console.log(id);
+    //console.log('runn')
+    let getData = [];
+    let myHeaders = new Headers();
+    // h.append('Authorization', token)
+    myHeaders.append("Authorization", token);
+
+
+   
+    let req = new Request(Path.getprint + '/' + id, {  headers: myHeaders, method: 'get' })
+
+    await fetch(req)
+        .then(res => res.json())
+        .then((dat) => { getData = dat; })
+        .catch(err => { alert("error", err.message); getData = false })
+
+    console.log('edit->', getData)
+    if (getData?.success === 'false') {
+        alert(getData.message); getData = false
+    }
+
+    return getData
 }
 const semesterbyclass = async (user) => {
     console.log(user);
@@ -356,6 +386,28 @@ const deleteService = async (token, sid) => {
 }
 
 
+
+
+const getRollNO = async (token,) => {
+    //console.log('runn')
+    let getData = [];
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+
+    let req = new Request(Path.getrollno, { method: 'GET', headers: myHeaders, })
+
+    await fetch(req,)
+        .then(res => res.json())
+        .then((dat) => getData = dat)
+        .catch(err => { alert(err.message); getData = false })
+
+    if (getData?.success === 'false') {
+        alert(getData.message); getData = false
+    }
+    console.log('getClass->', getData)
+    return getData
+
+}
 
 
 const getClass = async (token,) => {
@@ -586,9 +638,9 @@ export default {
 
     getStaffByCode, addUser, deleteUser,
 
-    getClass, addClass,semesterbyclass,
+    getClass,getRollNO, addClass,semesterbyclass,
 
-    getStudentByCode, addStudent,
+    getStudentByCode, addStudent,studentPrint,
 
     addService, getServicesbyCode, deleteService,addfeebystudent,getfeebystudent,feebyrollNo
 
