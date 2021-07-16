@@ -46,7 +46,8 @@ class AddNewStudent extends Component {
     services: [], 
     fee:'',
     className:"",
-    id:""
+    id:"",
+    otherserviceprice:''
   }
 
   async componentDidMount() {
@@ -151,10 +152,11 @@ class AddNewStudent extends Component {
 if (print.success) {
   console.log(print.data);
 
-  this.setState({rollNo:print.data[0].rollNo,firstName:print.data[0].firstname,fatherName:print.data[0].fathername,fee:print.data[0].fee,
+  this.setState({otherserviceprice:print.totalamount, rollNo:print.data[0].rollNo,firstName:print.data[0].firstname,fatherName:print.data[0].fathername,fee:print.data[0].fee,
   className:print.data[0].className,description:print.data[0].description,contact:print.data[0].contact,id:print.data[0].stID,studentCnic:print.data[0].studentCnic})
 
   console.log(this.state,'dttt');
+
 }
 window.print()
   }
@@ -414,7 +416,7 @@ window.print()
                   <h2 className="headings">Student Name</h2>
                 </div>
                 <div className="width-2">
-                  <h2 className="headings" style={{ minHeight: 15 }}>{`${this.state.firstname}  `}</h2>
+                  <h2 className="headings" style={{ minHeight: 15 }}>{`${this.state.firstName}  `}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -422,7 +424,7 @@ window.print()
                   <h2 className="headings" >Father Name</h2>
                 </div>
                 <div className="width-2">
-                  <h2 className="headings" style={{ minHeight: 15 }}  >{this.state.fathername}</h2>
+                  <h2 className="headings" style={{ minHeight: 15 }}  >{this.state.fatherName}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -446,7 +448,7 @@ window.print()
                   <span>1</span>
                   <span>{this.state.id}</span>
                   <span>{this.state.description} </span>
-                  <span>{this.state.fee}</span>
+                  <span>{parseInt(this.state.fee)+parseInt(this.state.otherserviceprice) }</span>
                 </div>
               </div>
               <div>
@@ -459,7 +461,7 @@ window.print()
                   <h2 className="headings" >Any Other Fee</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">Rs. 0</h2>
+                  <h2 className="headings">{this.state.otherserviceprice}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -467,7 +469,7 @@ window.print()
                   <h2 className="headings">Total Dues Till <span>{moment().add(15, 'days').format('YYYY/DD/MM')}</span></h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">{this.state.fee}</h2>
+                  <h2 className="headings">{parseInt(this.state.fee)+parseInt(this.state.otherserviceprice) }</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -475,7 +477,7 @@ window.print()
                   <h2 className="headings" >Amount After Above Due Date</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">{parseInt(this.state.fee) + 300}</h2>
+                  <h2 className="headings">{parseInt(this.state.fee)+parseInt(this.state.otherserviceprice) + 300}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -558,7 +560,7 @@ window.print()
                   <h2 className="headings">Student Name</h2>
                 </div>
                 <div className="width-2">
-                  <h2 className="headings" style={{ minHeight: 15 }}>{`${this.state.firstname}  `}</h2>
+                  <h2 className="headings" style={{ minHeight: 15 }}>{`${this.state.firstName}  `}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -566,7 +568,7 @@ window.print()
                   <h2 className="headings" >Father Name</h2>
                 </div>
                 <div className="width-2">
-                  <h2 className="headings" style={{ minHeight: 15 }}  >{this.state.fathername}</h2>
+                  <h2 className="headings" style={{ minHeight: 15 }}  >{this.state.fatherName}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -590,7 +592,7 @@ window.print()
                   <span>1</span>
                   <span>{this.state.id}</span>
                   <span>{this.state.description} </span>
-                  <span>{this.state.fee}</span>
+                  <span>{parseInt(this.state.fee)+parseInt(this.state.otherserviceprice) }</span>
                 </div>
               </div>
               <div>
@@ -603,7 +605,7 @@ window.print()
                   <h2 className="headings" >Any Other Fee</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">Rs. 0</h2>
+                  <h2 className="headings">{this.state.otherserviceprice}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -611,7 +613,7 @@ window.print()
                   <h2 className="headings">Total Dues Till <span>{moment().add(15, 'days').format('YYYY/DD/MM')}</span></h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">{this.state.fee}</h2>
+                  <h2 className="headings">{parseInt(this.state.fee)+parseInt(this.state.otherserviceprice) }</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -619,7 +621,7 @@ window.print()
                   <h2 className="headings" >Amount After Above Due Date</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">{parseInt(this.state.fee) + 300}</h2>
+                  <h2 className="headings">{parseInt(this.state.fee)+parseInt(this.state.otherserviceprice)  + 300}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -702,7 +704,7 @@ window.print()
                   <h2 className="headings">Student Name</h2>
                 </div>
                 <div className="width-2">
-                  <h2 className="headings" style={{ minHeight: 15 }}>{`${this.state.firstname}  `}</h2>
+                  <h2 className="headings" style={{ minHeight: 15 }}>{`${this.state.firstName}  `}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -710,7 +712,7 @@ window.print()
                   <h2 className="headings" >Father Name</h2>
                 </div>
                 <div className="width-2">
-                  <h2 className="headings" style={{ minHeight: 15 }}  >{this.state.fathername}</h2>
+                  <h2 className="headings" style={{ minHeight: 15 }}  >{this.state.fatherName}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -734,7 +736,7 @@ window.print()
                   <span>1</span>
                   <span>{this.state.id}</span>
                   <span>{this.state.description} </span>
-                  <span>{this.state.fee}</span>
+                  <span>{parseInt(this.state.fee)+parseInt(this.state.otherserviceprice) }</span>
                 </div>
               </div>
               <div>
@@ -747,7 +749,7 @@ window.print()
                   <h2 className="headings" >Any Other Fee</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">Rs. 0</h2>
+                  <h2 className="headings">{this.state.otherserviceprice}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -755,7 +757,7 @@ window.print()
                   <h2 className="headings">Total Dues Till <span>{moment().add(15, 'days').format('YYYY/DD/MM')}</span></h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">{this.state.fee}</h2>
+                  <h2 className="headings">{parseInt(this.state.fee)+parseInt(this.state.otherserviceprice) }</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -763,7 +765,7 @@ window.print()
                   <h2 className="headings" >Amount After Above Due Date</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">{parseInt(this.state.fee )+ 300}</h2>
+                  <h2 className="headings">{parseInt(this.state.fee)+parseInt(this.state.otherserviceprice) + 300}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -846,7 +848,7 @@ window.print()
                   <h2 className="headings">Student Name</h2>
                 </div>
                 <div className="width-2">
-                  <h2 className="headings" style={{ minHeight: 15 }}>{`${this.state.firstname}  `}</h2>
+                  <h2 className="headings" style={{ minHeight: 15 }}>{`${this.state.firstName}  `}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -854,7 +856,7 @@ window.print()
                   <h2 className="headings" >Father Name</h2>
                 </div>
                 <div className="width-2">
-                  <h2 className="headings" style={{ minHeight: 15 }}  >{this.state.fathername}</h2>
+                  <h2 className="headings" style={{ minHeight: 15 }} >{this.state.fatherName}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -878,7 +880,7 @@ window.print()
                   <span>1</span>
                   <span>{this.state.id}</span>
                   <span>{this.state.description} </span>
-                  <span>{this.state.fee}</span>
+                  <span>{parseInt(this.state.fee)+parseInt(this.state.otherserviceprice) }</span>
                 </div>
               </div>
               <div>
@@ -891,7 +893,7 @@ window.print()
                   <h2 className="headings" >Any Other Fee</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">Rs. 0</h2>
+                  <h2 className="headings">{this.state.otherserviceprice}</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -899,7 +901,7 @@ window.print()
                   <h2 className="headings">Total Dues Till <span>{moment().add(15, 'days').format('YYYY/DD/MM')}</span></h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">{this.state.fee}</h2>
+                  <h2 className="headings">{parseInt(this.state.fee)+parseInt(this.state.otherserviceprice) }</h2>
                 </div>
               </div>
               <div className="feemonth">
@@ -907,7 +909,7 @@ window.print()
                   <h2 className="headings" >Amount After Above Due Date</h2>
                 </div>
                 <div className="width">
-                  <h2 className="headings">{parseInt(this.state.fee) + 300}</h2>
+                  <h2 className="headings">{parseInt(this.state.fee)+parseInt(this.state.otherserviceprice) + 300}</h2>
                 </div>
               </div>
               <div className="feemonth">
