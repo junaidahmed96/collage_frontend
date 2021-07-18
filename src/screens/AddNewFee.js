@@ -5,6 +5,7 @@ import '../index.css'
 import { connect } from "react-redux";
 import { setLoading } from "../store/actions/globalActions";
 import comma from 'comma-number'
+import api from "../services/api";
 
 class AddNewFee extends React.Component {
   constructor(props) {
@@ -52,7 +53,7 @@ class AddNewFee extends React.Component {
     return tomorrow.toDateString()
   }
 
-  generateFee = () => {
+  generateFee =async () => {
 
 
     let fee = []
@@ -77,6 +78,29 @@ class AddNewFee extends React.Component {
       }
 
     }
+    console.log(this.state.selected.stID);
+    console.log(fee,'fee');
+
+    fee.map(async(r2)=>{
+
+      let c = {
+        studentID:this.state.selected.stID,
+        amount:r2.amount,
+        vDate:r2.vDate,
+        dDate:r2.dDate,
+    
+  
+  
+      }
+      console.log(c,'te44');
+      let res = await api.addfeegeneration(this.props.token, c)
+      if (res) {
+          console.log(res);
+
+        
+      }
+    })
+    
     this.setState({ feeVoucher: fee })
   }
 
@@ -184,9 +208,7 @@ class AddNewFee extends React.Component {
             <button className="btn btn-primary" style={{ fontSize: '10px' }} onClick={this.handleAddItem} disabled={!this.state.text}>{"Add New Services #"}</button>
           </form>
           <div className="row" style={{ padding: '20px' }}>
-            <div className="col-md-12" >
-              {/* <TodoList items={this.state.items} onItemCompleted={this.markItemCompleted} onDeleteItem={this.handleDeleteItem} /> */}
-            </div>
+           
           </div>
         </div>
       </div>
@@ -211,22 +233,4 @@ const mapDispatch = dispatch => {
 export default connect(mapState, mapDispatch)(AddNewFee)
 
 
-class TodoItem extends React.Component {
-
-
-  render() {
-    return (
-      <div>
-        <Table className='itemClass' ref={li => this._listItem = li}  >
-          <thead style={{ width: 400 }} >
-            <td style={{ width: 400, justifyContent: 'space-between', display: 'flex' }}>
-              <span>{'hy'}</span>
-              <button type="button" className="btn btn-danger btn-sm" style={{ marginLeft: 50 }}>x</button>
-            </td>
-          </thead >
-        </Table>
-      </div>
-    );
-  }
-}
 

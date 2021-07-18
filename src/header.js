@@ -51,6 +51,9 @@ class Header extends Component {
         <NavLink exact to="/FeeCollection" activeClassName='active-navlinks' className='links fee-collection hvr-underline-from-left'>
           Fee Collection
         </NavLink>
+        {/* <NavLink exact to="/FeeGeneration" activeClassName='active-navlinks' className='links fee-collection hvr-underline-from-left'>
+          Fee Generation
+        </NavLink> */}
         <NavLink exact to="/classCollection" activeClassName='active-navlinks' className='links fee-collection hvr-underline-from-left'>
           Class Collection
         </NavLink>

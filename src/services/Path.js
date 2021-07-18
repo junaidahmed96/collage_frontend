@@ -26,6 +26,7 @@ export const Path = {
     addStudent: baseUrl + 'student',
     getrollno: baseUrl + 'studentrollno',
     getprint: baseUrl + 'studentprint',
+    feegeneration: baseUrl + 'feegeneration',
     addservice: baseUrl + 'service',
     
     deleteUser: baseUrl + 'user/',
@@ -34,6 +35,7 @@ export const Path = {
     studentbyclass: baseUrl + 'studentbyclass',
     studentfee: baseUrl + 'studentfee',
     studentfeebyrollno: baseUrl + 'studentfeebyrollno',
+    addfeegeneration: baseUrl + 'studentfeegeneration',
 
 
 }

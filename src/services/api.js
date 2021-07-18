@@ -151,6 +151,26 @@ const feebyrollNo = async (c) => {
 
 }
 
+const feegeneration = async (c) => {
+    console.log(c);
+    //console.log('runn')
+    let getData = [];
+    let myHeaders = new Headers();
+    // h.append('Authorization', token)
+    myHeaders.append("Authorization", c.token);
+
+
+   
+    let req = new Request(Path.feegeneration + '/' + c.rollno2, {  headers: myHeaders, method: 'get' })
+
+    await fetch(req)
+        .then(res => res.json())
+        .then((dat) => { getData = dat; })
+       
+
+    return getData
+
+}
 
 
 
@@ -467,6 +487,7 @@ const addClass = async (token, c) => {
     formdata.append("dated", c.dated);
     formdata.append("semester", c.semester);
     formdata.append("semesterid", c.semesterId);
+    formdata.append("semesterduration", c.semesterDuration);
 
     let req = new Request(Path.addClass, { method: 'POST', headers: myHeaders, body: formdata, })
 
@@ -482,6 +503,7 @@ const addClass = async (token, c) => {
     return getData
 
 }
+
 const addfeebystudent = async (token, c) => {
     //console.log('runn')
     let getData = [];
@@ -497,6 +519,37 @@ const addfeebystudent = async (token, c) => {
     formdata.append("totalfee", c.totalfee);
 
     let req = new Request(Path.studentfee, { method: 'POST', headers: myHeaders, body: formdata, })
+
+    await fetch(req,)
+        .then(res => res.json())
+        .then((dat) => getData = dat)
+        .catch(err => { alert(err.message); getData = false })
+
+    if (getData?.success === 'false') {
+        alert(getData.message); getData = false
+    }
+    console.log('addClass->', getData)
+    return getData
+
+}
+const addfeegeneration = async (token, c) => {
+    //console.log('runn')
+    let getData = [];
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+    console.log(c);
+
+  
+
+
+    var formdata = new FormData();
+    formdata.append("amount", c.amount);
+    formdata.append("studentID", c.studentID);
+    formdata.append("vDate", c.vDate);
+    formdata.append("dDate", c.dDate);
+
+
+    let req = new Request(Path.addfeegeneration, { method: 'POST', headers: myHeaders, body: formdata, })
 
     await fetch(req,)
         .then(res => res.json())
@@ -642,6 +695,6 @@ export default {
 
     getStudentByCode, addStudent,studentPrint,
 
-    addService, getServicesbyCode, deleteService,addfeebystudent,getfeebystudent,feebyrollNo
+    addService, getServicesbyCode, deleteService,addfeebystudent,addfeegeneration,getfeebystudent,feebyrollNo,feegeneration,
 
 }

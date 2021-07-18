@@ -17,6 +17,7 @@ import ClassForm from '../screens/ClassForm';
 import ClassGeneration from '../screens/ClassGeneration'; 
 import ClassActivation from '../screens/ClassActivation'; 
 import { connect,  } from "react-redux"; 
+import FeeGeneration from "../screens/FeeGeneration";
 // import {store,per} from '../store/store'
 
 class ReactRouter extends React.Component {
@@ -47,6 +48,7 @@ class ReactRouter extends React.Component {
           <Route path="/OverDue" component={OverDue} />
           <Route path="/FeeReport" component={FeeReport} />
           <Route path="/FeeCollection" component={FeeCollection} />
+          <Route path="/FeeGeneration" component={FeeGeneration} />
           <Route path="/classCollection" component={classCollection} />
           <Route path="/ViewStudentData" component={ViewStudentData} />
           <Route path="/ClassForm" component={ClassForm} />
