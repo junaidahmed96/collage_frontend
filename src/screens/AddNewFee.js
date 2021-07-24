@@ -13,7 +13,9 @@ class AddNewFee extends React.Component {
 
     this.state = {
       searchResults: [],
+      searchservices: [],
       month: '', selected: { fee: 100 },
+      selectedservice: { fee: 100 },
       cnic: '', feeVoucher: false, perMonth: false
     };
 
@@ -30,6 +32,18 @@ class AddNewFee extends React.Component {
     this.setState({ searchResults: students })
   }
 
+  searchserviceHandler = (val) => {
+  console.log(this.props.services);
+    if (!val) {
+      return this.setState({ searchResults: [] })
+    }
+    let searchKey = val.toLowerCase()
+
+    let services = this.props.services.filter(item => (item.serviceName).toLowerCase().includes(searchKey) === true)
+    console.log(services,'servic');
+    this.setState({ searchservices: services })
+    console.log(this.state.searchservices);
+  }
   cnicHandler = (cnic) => {
 
     if (this.state.cnic.length - 1 === cnic.length) {
@@ -57,7 +71,8 @@ class AddNewFee extends React.Component {
 
 
     let fee = []
-    let totFee = parseInt(this.state.selected.fee)
+    console.log(this.state.selectedservice?.serviceAmmount,'seleeccc');
+    let totFee = this.state.selectedservice?.serviceAmmount ?parseInt(this.state.selected.fee)+parseInt(this.state.selectedservice.serviceAmmount):parseInt(this.state.selected.fee)
     if (this.state.perMonth) {
       let index = 0
       while (totFee >= this.state.month) {
@@ -105,7 +120,7 @@ class AddNewFee extends React.Component {
   }
 
   render() {
-
+console.log('serchservice',this.state.selectedservice);
 
     return (
 
@@ -141,7 +156,7 @@ class AddNewFee extends React.Component {
                     <td>{student.className}</td>
                     <td>{student.noOfSemester}</td>
                     <td>{student.rollNo}</td>
-                    <td>{comma(student.fee)}</td>
+                    <td>{this.state.selectedservice?.serviceAmmount?comma(parseInt(this.state.selectedservice?.serviceAmmount)+parseInt(student.fee)):comma(parseInt(student.fee))}</td>
                   </tr>
                 )
 
@@ -203,9 +218,38 @@ class AddNewFee extends React.Component {
         <div className='hide-on-print' style={{ alignSelf: 'flex-start' }}>
           <form className="row">
             <div className="col-md-8">
-              <input type="text" className="form-control" onChange={this.handleTextChange} value={this.state.text} />
+              <span>Search Service</span>
+              <input type="text" className="form-control" onChange={(e) => this.searchserviceHandler(e.target.value)} value={this.state.text} />
             </div>
-            <button className="btn btn-primary" style={{ fontSize: '10px' }} onClick={this.handleAddItem} disabled={!this.state.text}>{"Add New Services #"}</button>
+            
+            {
+            this.state.searchservices.length > 0 &&
+            <Table striped bordered hover size="sm" className="table hide-on-print">
+              <thead>
+
+                <th>#</th>
+                <th>ID</th>
+                <th>serviceName</th>
+                <th>serviceDescription</th>
+                <th>serviceAmount</th>
+               
+
+              </thead>
+              {
+                this.state.searchservices.map((student, index) =>
+                  <tr key={index} style={{ background: this.state.selectedservice === student ? '#fff000' : 'tranparent' }} onClick={() => this.setState({ selectedservice: student })} >
+                    <td>{index + 1}</td>
+                    <td>{student.serviceID}</td>
+                    <td>{student.serviceName}</td>
+                    <td>{student.serviceDescription}</td>
+                    <td>{comma(student.serviceAmmount)}</td>
+                  </tr>
+                )
+
+              }
+            </Table>
+          }
+            {/* <button className="btn btn-primary" style={{ fontSize: '10px' }} onClick={this.handleAddItem} disabled={!this.state.text}>{"Add New Services #"}</button> */}
           </form>
           <div className="row" style={{ padding: '20px' }}>
            
@@ -222,11 +266,13 @@ const mapState = state => {
     token: state.authReducers.token,
     loading: state.globalReducers.loading,
     students: state.appReducers.students,
+    services: state.appReducers.services,
   }
 }
 const mapDispatch = dispatch => {
   return {
     setLoading: bol => dispatch(setLoading(bol)),
+   
   }
 }
 
