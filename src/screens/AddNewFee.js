@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { setLoading } from "../store/actions/globalActions";
 import comma from 'comma-number'
 import api from "../services/api";
-
+import { _getServices } from "../store/middlewares/appMiddleware";
 class AddNewFee extends React.Component {
   constructor(props) {
     super(props);
@@ -21,6 +21,10 @@ class AddNewFee extends React.Component {
 
 
   }
+  componentDidMount() {
+    this.props._getServices(this.props.token,this.props.user.inCode)
+  }
+
 
   searchHandler = (val) => {
     if (!val) {
@@ -99,13 +103,10 @@ class AddNewFee extends React.Component {
     fee.map(async(r2)=>{
 
       let c = {
-        studentID:this.state.selected.stID,
+        studentID:this.state.selected.rollNo,
         amount:r2.amount,
         vDate:r2.vDate,
         dDate:r2.dDate,
-    
-  
-  
       }
       console.log(c,'te44');
       let res = await api.addfeegeneration(this.props.token, c)
@@ -120,7 +121,7 @@ class AddNewFee extends React.Component {
   }
 
   render() {
-console.log('serchservice',this.state.selectedservice);
+console.log('serchservice',this.state.selected);
 
     return (
 
@@ -272,7 +273,7 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     setLoading: bol => dispatch(setLoading(bol)),
-   
+    _getServices: (token, code) => dispatch(_getServices(token, code))
   }
 }
 

@@ -565,6 +565,27 @@ const addfeegeneration = async (token, c) => {
 }
 
 
+
+const getoverduestudent = async (token,) => {
+    //console.log('runn')
+    let getData = [];
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+
+    let req = new Request(Path.overduegeneration, { method: 'GET', headers: myHeaders, })
+
+    await fetch(req,)
+        .then(res => res.json())
+        .then((dat) => getData = dat)
+        .catch(err => { alert(err.message); getData = false })
+
+    if (getData?.success === 'false') {
+        alert(getData.message); getData = false
+    }
+    console.log('getClass->', getData)
+    return getData
+
+}
 const getfeebystudent = async (token,) => {
     //console.log('runn')
     let getData = [];
@@ -695,6 +716,6 @@ export default {
 
     getStudentByCode, addStudent,studentPrint,
 
-    addService, getServicesbyCode, deleteService,addfeebystudent,addfeegeneration,getfeebystudent,feebyrollNo,feegeneration,
+    addService, getServicesbyCode, deleteService,addfeebystudent,getoverduestudent,addfeegeneration,getfeebystudent,feebyrollNo,feegeneration,
 
 }

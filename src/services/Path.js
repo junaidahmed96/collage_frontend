@@ -36,6 +36,7 @@ export const Path = {
     studentfee: baseUrl + 'studentfee',
     studentfeebyrollno: baseUrl + 'studentfeebyrollno',
     addfeegeneration: baseUrl + 'studentfeegeneration',
+    overduegeneration: baseUrl + 'studentoverdue',
 
 
 }

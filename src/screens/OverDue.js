@@ -2,15 +2,21 @@ import React, { Component } from "react";
 import Header from '../header';
 import '../index.css'
 import { Table } from 'react-bootstrap';
-import Loader from 'react-loader-spinner'
+import Loader from 'react-loader-spinner';
+import { connect } from "react-redux";
+
+import api from "../services/api";
+
 class OverDue extends Component {
     state = {
-        staffdata: [
-            { studentname: 'Siraj', rollno: '123456789', name: 'Siraj Zaki', gender: 'male', phone: '03137669964', insitituteName: 'Multiware', lastdate: 'mm/dd/yyyy', fee: '3000', fathername: 'Muneer Ahmed' },
-            { studentname: 'Siraj', rollno: '123456789', name: 'Siraj Zaki', gender: 'male', phone: '03137669964', insitituteName: 'Multiware', lastdate: 'mm/dd/yyyy', fee: '3000', fathername: 'Muneer Ahmed' },
-            { studentname: 'Siraj', rollno: '123456789', name: 'Siraj Zaki', gender: 'male', phone: '03137669964', insitituteName: 'Multiware', lastdate: 'mm/dd/yyyy', fee: '3000', fathername: 'Muneer Ahmed' },
-            { studentname: 'Siraj', rollno: '123456789', name: 'Siraj Zaki', gender: 'male', phone: '03137669964', insitituteName: 'Multiware', lastdate: 'mm/dd/yyyy', fee: '3000', fathername: 'Muneer Ahmed' },
-        ]
+        staffdata: []
+    }
+
+
+   async componentDidMount() {
+        let res = await api.getoverduestudent(this.props.token)
+        console.log(res.result);
+        this.setState({staffdata:res.result})
     }
     render() {
         return (
@@ -39,14 +45,14 @@ class OverDue extends Component {
                                 <th>Fee</th>
                                 <th>Last Date</th>
                                 <th>Phone</th>
-                                <div style={{ margin: 10 }}>
+                                {/* <div style={{ margin: 10 }}>
                                     <a href="/AddNewStaff">
                                         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                                             <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                         </svg>
                                     </a>
-                                </div>
+                                </div> */}
 
                             </tr>
                         </thead>
@@ -58,21 +64,21 @@ class OverDue extends Component {
                                 this.state.staffdata.map((e, index) =>
                                     <tr key={index}>
                                         <td>{index + 1}</td>
-                                        <td>{e.studentname}</td>
+                                        <td>{e.firstName + '' +e.lastName}</td>
                                         <td>{e.gender}</td>
-                                        <td>{e.rollno}</td>
-                                        <td>{e.fathername}</td>
-                                        <td>{e.fee}</td>
-                                        <td>{e.lastdate}</td>
-                                        <td>{e.phone}</td>
-                                        <div style={{ margin: 10 }}>
+                                        <td>{e.rollNo}</td>
+                                        <td>{e.fatherName}</td>
+                                        <td>{e.amount}</td>
+                                        <td>{e.dDate}</td>
+                                        <td>{e.mobileNo1}</td>
+                                        {/* <div style={{ margin: 10 }}>
                                             <a href="/AddNewStudent">
                                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                                                     <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                                 </svg>
                                             </a>
-                                        </div>
+                                        </div> */}
                                     </tr>
                                 )
 
@@ -92,4 +98,14 @@ class OverDue extends Component {
     }
 }
 
-export default (OverDue);
+const mapState = state => {
+    return {
+      token: state.authReducers.token,
+    }
+  }
+  const mapDispatch = dispatch => {
+    return {
+  
+    }
+  }
+export default connect(mapState, mapDispatch)(OverDue);
